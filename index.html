@@ -19,9 +19,10 @@
       <h1>Beres!</h1>
       <p>Catat tugasmu, centang kalau sudah selesai, dan lihat progresmu naik.</p>
       <div class="status"><i class="dot" id="dot"></i><span id="stat">Menghubungkan…</span></div>
+      <div class="who hidden" id="whobox"><span id="who"></span><button id="logout" type="button">Keluar</button></div>
     </div>
 
-    <div class="card prog" aria-label="Progres tugas">
+    <div class="card prog hidden" id="prog" aria-label="Progres tugas">
       <div class="ring">
         <svg viewBox="0 0 200 200"><circle class="track" cx="100" cy="100" r="80"/><circle class="bar" id="bar" cx="100" cy="100" r="80"/></svg>
         <div class="num"><b id="pct">0%</b></div>
@@ -33,7 +34,21 @@
     </div>
   </header>
 
-  <main class="card board">
+  <section class="card board auth hidden" id="auth">
+    <div class="tabs" id="atabs">
+      <button type="button" class="atab on" data-m="masuk">Masuk</button>
+      <button type="button" class="atab" data-m="daftar">Daftar</button>
+    </div>
+    <form id="af">
+      <input type="email" id="email" placeholder="Email" required autocomplete="email" aria-label="Email">
+      <input type="password" id="pw" placeholder="Password (minimal 6 karakter)" minlength="6" required autocomplete="current-password" aria-label="Password">
+      <button class="add" id="asubmit" type="submit">Masuk</button>
+    </form>
+    <div class="err" id="aerr" role="alert"></div>
+    <p class="note" id="anote">Belum punya akun? Pilih tab Daftar. Setiap akun punya daftar tugas sendiri.</p>
+  </section>
+
+  <main class="card board hidden" id="app">
     <form id="f">
       <input type="text" id="title" class="full" placeholder="Tugas apa yang mau dibereskan?" maxlength="120" required aria-label="Judul tugas">
       <div class="row2 full">
