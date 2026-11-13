@@ -1,78 +1,275 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Beres! — To-Do List</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Beres! — To-Do List</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+
 <div class="wrap">
 
-  <header class="top">
-    <div class="title">
-      <span class="sticker" id="today">Hari ini</span>
-      <h1>Beres!</h1>
-      <p>Catat tugasmu, centang kalau sudah selesai, dan lihat progresmu naik.</p>
-      <div class="status"><i class="dot" id="dot"></i><span id="stat">Menghubungkan…</span></div>
-      <div class="who hidden" id="whobox"><span id="who"></span><button id="logout" type="button">Keluar</button></div>
-    </div>
+    <!-- HEADER -->
+    <header class="top">
 
-    <div class="card prog hidden" id="prog" aria-label="Progres tugas">
-      <div class="ring">
-        <svg viewBox="0 0 200 200"><circle class="track" cx="100" cy="100" r="80"/><circle class="bar" id="bar" cx="100" cy="100" r="80"/></svg>
-        <div class="num"><b id="pct">0%</b></div>
-      </div>
-      <div class="prog-text">
-        <strong>Progres kamu</strong>
-        <span id="cnt">0 dari 0 selesai</span>
-      </div>
-    </div>
-  </header>
+        <div class="title">
 
-  <section class="card board auth hidden" id="auth">
-    <div class="tabs" id="atabs">
-      <button type="button" class="atab on" data-m="masuk">Masuk</button>
-      <button type="button" class="atab" data-m="daftar">Daftar</button>
-    </div>
-    <form id="af">
-      <input type="email" id="email" placeholder="Email" required autocomplete="email" aria-label="Email">
-      <input type="password" id="pw" placeholder="Password (minimal 6 karakter)" minlength="6" required autocomplete="current-password" aria-label="Password">
-      <button class="add" id="asubmit" type="submit">Masuk</button>
-    </form>
-    <div class="err" id="aerr" role="alert"></div>
-    <p class="note" id="anote">Belum punya akun? Pilih tab Daftar. Setiap akun punya daftar tugas sendiri.</p>
-  </section>
+            <span class="sticker" id="today">Hari ini</span>
 
-  <main class="card board hidden" id="app">
-    <form id="f">
-      <input type="text" id="title" class="full" placeholder="Tugas apa yang mau dibereskan?" maxlength="120" required aria-label="Judul tugas">
-      <div class="row2 full">
-        <select id="prio" aria-label="Prioritas">
-          <option value="tinggi">Prioritas tinggi</option>
-          <option value="sedang" selected>Prioritas sedang</option>
-          <option value="rendah">Prioritas rendah</option>
-        </select>
-        <input type="date" id="due" aria-label="Tenggat">
-        <button class="add" type="submit">+ Tambah</button>
-      </div>
-    </form>
-    <div class="err" id="err" role="alert"></div>
+            <h1>Beres!</h1>
 
-    <div class="tabs" id="tabs">
-      <button class="tab on" data-f="all">Semua<small id="c-all">0</small></button>
-      <button class="tab" data-f="open">Belum selesai<small id="c-open">0</small></button>
-      <button class="tab" data-f="done">Selesai<small id="c-done">0</small></button>
-    </div>
-    <ul id="list"></ul>
-  </main>
+            <p>
+                Catat tugasmu, centang kalau sudah selesai,
+                dan lihat progresmu naik.
+            </p>
+
+            <div class="status">
+                <i class="dot" id="dot"></i>
+                <span id="stat">Menghubungkan...</span>
+            </div>
+
+            <div class="who hidden" id="whobox">
+                <span id="who"></span>
+                <button id="logout" type="button">Keluar</button>
+            </div>
+
+        </div>
+
+        <!-- PROGRESS -->
+        <div class="card prog hidden" id="prog" aria-label="Progres tugas">
+
+            <div class="ring">
+
+                <svg viewBox="0 0 200 200">
+                    <circle
+                        class="track"
+                        cx="100"
+                        cy="100"
+                        r="80"
+                    />
+
+                    <circle
+                        class="bar"
+                        id="bar"
+                        cx="100"
+                        cy="100"
+                        r="80"
+                    />
+                </svg>
+
+                <div class="num">
+                    <b id="pct">0%</b>
+                </div>
+
+            </div>
+
+            <div class="prog-text">
+                <strong>Progres kamu</strong>
+                <span id="cnt">0 dari 0 selesai</span>
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- LOGIN & REGISTER -->
+    <section class="card board auth hidden" id="auth">
+
+        <div class="tabs" id="atabs">
+
+            <button
+                type="button"
+                class="atab on"
+                data-m="masuk"
+            >
+                Masuk
+            </button>
+
+            <button
+                type="button"
+                class="atab"
+                data-m="daftar"
+            >
+                Daftar
+            </button>
+
+        </div>
+
+        <form id="af">
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Email"
+                required
+                autocomplete="email"
+                aria-label="Email"
+            >
+
+            <input
+                type="password"
+                id="pw"
+                placeholder="Password (minimal 6 karakter)"
+                minlength="6"
+                required
+                autocomplete="current-password"
+                aria-label="Password"
+            >
+
+            <button
+                class="add"
+                id="asubmit"
+                type="submit"
+            >
+                Masuk
+            </button>
+
+        </form>
+
+        <div class="err" id="aerr" role="alert"></div>
+
+        <p class="note" id="anote">
+            Belum punya akun? Pilih tab Daftar.
+            Setiap akun punya daftar tugas sendiri.
+        </p>
+
+    </section>
+
+
+    <!-- MAIN APPLICATION -->
+    <main class="card board hidden" id="app">
+
+        <!-- FORM TAMBAH TUGAS -->
+        <form id="f">
+
+            <!-- JUDUL -->
+            <input
+                type="text"
+                id="title"
+                class="full"
+                placeholder="Tugas apa yang mau dibereskan?"
+                maxlength="120"
+                required
+                aria-label="Judul tugas"
+            >
+
+            <!-- CATATAN -->
+            <textarea
+                id="note"
+                class="full"
+                placeholder="Tambahkan catatan tugas di sini..."
+                maxlength="1000"
+                rows="3"
+                aria-label="Catatan tugas"
+            ></textarea>
+
+            <!-- PRIORITAS DAN DEADLINE -->
+            <div class="row2 full">
+
+                <select id="prio" aria-label="Prioritas">
+
+                    <option value="tinggi">
+                        Prioritas tinggi
+                    </option>
+
+                    <option value="sedang" selected>
+                        Prioritas sedang
+                    </option>
+
+                    <option value="rendah">
+                        Prioritas rendah
+                    </option>
+
+                </select>
+
+                <!-- DEADLINE -->
+                <input
+                    type="date"
+                    id="due"
+                    aria-label="Deadline tugas"
+                    required
+                >
+
+                <button class="add" type="submit">
+                    + Tambah
+                </button>
+
+            </div>
+
+            <p class="note">
+                Pilih deadline hari ini atau tanggal setelahnya.
+                Tanggal yang sudah lewat tidak diperbolehkan.
+            </p>
+
+        </form>
+
+
+        <!-- ERROR MESSAGE -->
+        <div class="err" id="err" role="alert"></div>
+
+
+        <!-- FILTER TUGAS -->
+        <div class="tabs" id="tabs">
+
+            <button
+                class="tab on"
+                type="button"
+                data-f="all"
+            >
+                Semua
+                <small id="c-all">0</small>
+            </button>
+
+            <button
+                class="tab"
+                type="button"
+                data-f="open"
+            >
+                Belum selesai
+                <small id="c-open">0</small>
+            </button>
+
+            <button
+                class="tab"
+                type="button"
+                data-f="done"
+            >
+                Selesai
+                <small id="c-done">0</small>
+            </button>
+
+        </div>
+
+
+        <!-- DAFTAR TUGAS -->
+        <ul id="list"></ul>
+
+    </main>
 
 </div>
+
+
+<!-- JAVASCRIPT CONFIG -->
 <script src="config.js"></script>
+
+<!-- JAVASCRIPT APPLICATION -->
 <script src="script.js"></script>
+
 </body>
 </html>
