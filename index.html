@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -56,20 +55,8 @@
             <div class="ring">
 
                 <svg viewBox="0 0 200 200">
-                    <circle
-                        class="track"
-                        cx="100"
-                        cy="100"
-                        r="80"
-                    />
-
-                    <circle
-                        class="bar"
-                        id="bar"
-                        cx="100"
-                        cy="100"
-                        r="80"
-                    />
+                    <circle class="track" cx="100" cy="100" r="80" />
+                    <circle class="bar" id="bar" cx="100" cy="100" r="80" />
                 </svg>
 
                 <div class="num">
@@ -92,23 +79,8 @@
     <section class="card board auth hidden" id="auth">
 
         <div class="tabs" id="atabs">
-
-            <button
-                type="button"
-                class="atab on"
-                data-m="masuk"
-            >
-                Masuk
-            </button>
-
-            <button
-                type="button"
-                class="atab"
-                data-m="daftar"
-            >
-                Daftar
-            </button>
-
+            <button type="button" class="atab on" data-m="masuk">Masuk</button>
+            <button type="button" class="atab" data-m="daftar">Daftar</button>
         </div>
 
         <form id="af">
@@ -132,11 +104,7 @@
                 aria-label="Password"
             >
 
-            <button
-                class="add"
-                id="asubmit"
-                type="submit"
-            >
+            <button class="add" id="asubmit" type="submit">
                 Masuk
             </button>
 
@@ -158,7 +126,6 @@
         <!-- FORM TAMBAH TUGAS -->
         <form id="f">
 
-            <!-- JUDUL -->
             <input
                 type="text"
                 id="title"
@@ -169,7 +136,6 @@
                 aria-label="Judul tugas"
             >
 
-            <!-- CATATAN -->
             <textarea
                 id="note"
                 class="full"
@@ -179,26 +145,14 @@
                 aria-label="Catatan tugas"
             ></textarea>
 
-            <!-- PRIORITAS DAN DEADLINE -->
             <div class="row2 full">
 
                 <select id="prio" aria-label="Prioritas">
-
-                    <option value="tinggi">
-                        Prioritas tinggi
-                    </option>
-
-                    <option value="sedang" selected>
-                        Prioritas sedang
-                    </option>
-
-                    <option value="rendah">
-                        Prioritas rendah
-                    </option>
-
+                    <option value="tinggi">Prioritas tinggi</option>
+                    <option value="sedang" selected>Prioritas sedang</option>
+                    <option value="rendah">Prioritas rendah</option>
                 </select>
 
-                <!-- DEADLINE -->
                 <input
                     type="date"
                     id="due"
@@ -220,38 +174,23 @@
         </form>
 
 
-        <!-- ERROR MESSAGE -->
+        <!-- ERROR / INFO MESSAGE -->
         <div class="err" id="err" role="alert"></div>
 
 
         <!-- FILTER TUGAS -->
         <div class="tabs" id="tabs">
 
-            <button
-                class="tab on"
-                type="button"
-                data-f="all"
-            >
-                Semua
-                <small id="c-all">0</small>
+            <button class="tab on" type="button" data-f="all">
+                Semua <small id="c-all">0</small>
             </button>
 
-            <button
-                class="tab"
-                type="button"
-                data-f="open"
-            >
-                Belum selesai
-                <small id="c-open">0</small>
+            <button class="tab" type="button" data-f="open">
+                Belum selesai <small id="c-open">0</small>
             </button>
 
-            <button
-                class="tab"
-                type="button"
-                data-f="done"
-            >
-                Selesai
-                <small id="c-done">0</small>
+            <button class="tab" type="button" data-f="done">
+                Selesai <small id="c-done">0</small>
             </button>
 
         </div>
@@ -265,10 +204,7 @@
 </div>
 
 
-<!-- JAVASCRIPT CONFIG -->
 <script src="config.js"></script>
-
-<!-- JAVASCRIPT APPLICATION -->
 <script src="script.js"></script>
 
 </body>

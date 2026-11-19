@@ -1,4 +1,3 @@
-
 const ready =
     !SUPABASE_URL.includes("ISI_") &&
     !SUPABASE_KEY.includes("ISI_");
@@ -44,6 +43,15 @@ function updateDeadline() {
 }
 
 updateDeadline();
+
+// Perbarui batas tanggal setiap kali kolom tanggal disentuh
+$("due").addEventListener("focus", updateDeadline);
+$("due").addEventListener("click", updateDeadline);
+
+// Tugas terlambat = belum selesai dan deadline sebelum hari ini
+function isLate(t) {
+    return !t.is_done && t.due_date && t.due_date < getToday();
+}
 
 // ===============================
 // PESAN ERROR
@@ -234,6 +242,11 @@ async function editTask(id) {
 
     if (!task) return;
 
+    // Tugas yang deadline-nya sudah lewat tidak bisa diedit
+    if (isLate(task)) {
+        return showErr("Deadline tugas ini sudah lewat.");
+    }
+
     // Edit judul
     const title = prompt(
         "EDIT JUDUL TUGAS",
@@ -332,6 +345,11 @@ async function toggle(id) {
     );
 
     if (!task) return;
+
+    // Tugas yang deadline-nya sudah lewat tidak bisa dicentang
+    if (isLate(task)) {
+        return showErr("Deadline tugas ini sudah lewat.");
+    }
 
     const oldStatus = task.is_done;
 
@@ -442,13 +460,15 @@ function render() {
 
     $("list").innerHTML = shown.length
         ? shown.map(t => `
-            <li class="${esc(t.priority)} ${t.is_done ? "done" : ""}">
+            <li class="${esc(t.priority)} ${t.is_done ? "done" : ""} ${isLate(t) ? "late" : ""}">
 
                 <button
                     class="chk"
                     data-a="toggle"
                     data-id="${esc(t.id)}"
                     aria-label="Tandai selesai"
+                    type="button"
+                    ${isLate(t) ? "disabled" : ""}
                 >✓</button>
 
                 <div class="task-content">
@@ -460,6 +480,7 @@ function render() {
                     <div class="m">
                         ${fmt(t.due_date)}
                         · ${esc(t.priority)}
+                        ${isLate(t) ? " · ⚠️ Terlambat" : ""}
                     </div>
 
                     ${t.note ? `
@@ -476,6 +497,7 @@ function render() {
                     data-id="${esc(t.id)}"
                     aria-label="Edit tugas"
                     type="button"
+                    ${isLate(t) ? "disabled" : ""}
                 >✏️</button>
 
                 <button
@@ -557,7 +579,7 @@ $("f").addEventListener("submit", async e => {
 $("list").addEventListener("click", e => {
     const b = e.target.closest("button");
 
-    if (!b) return;
+    if (!b || b.disabled) return;
 
     const id = b.dataset.id;
 
@@ -566,7 +588,10 @@ $("list").addEventListener("click", e => {
     } else if (b.dataset.a === "edit") {
         editTask(id);
     } else if (b.dataset.a === "del") {
-        remove(id);
+        // Konfirmasi dulu sebelum menghapus
+        if (confirm("Anda yakin ingin menghapus tugas ini?")) {
+            remove(id);
+        }
     }
 });
 
@@ -678,10 +703,12 @@ $("af").addEventListener("submit", async e => {
 });
 
 // ===============================
-// LOGOUT
+// LOGOUT (dengan konfirmasi)
 // ===============================
 
 $("logout").addEventListener("click", async () => {
+    if (!confirm("Anda yakin ingin keluar dari halaman ini?")) return;
+
     if (sb) {
         await sb.auth.signOut();
     }
