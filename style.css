@@ -1,127 +1,224 @@
+/* ============================================================
+   VARIABEL WARNA & UKURAN
+   Disimpan di :root agar bisa dipakai ulang dengan var(--nama).
+   Mengubah satu variabel akan mengubah seluruh tampilan.
+   ============================================================ */
 :root{
-  --bg:#e8e2ff; --ink:#161225; --white:#fff;
-  --yellow:#ffd43b; --pink:#ff6b9d; --mint:#2ee6a6; --blue:#5b8cff;
-  --pink-l:#ffe0ec; --yellow-l:#fff2bd; --blue-l:#dfe8ff; --mint-l:#d5fbec;
-  --line:3px solid var(--ink);
-  --shadow:6px 6px 0 var(--ink);
+  --bg:#e8e2ff;      /* warna latar halaman (ungu muda) */
+  --ink:#161225;     /* warna teks & garis (hampir hitam) */
+  --white:#fff;      /* putih */
+  --yellow:#ffd43b;  /* kuning */
+  --pink:#ff6b9d;    /* merah muda */
+  --mint:#2ee6a6;    /* hijau mint */
+  --blue:#5b8cff;    /* biru */
+  --pink-l:#ffe0ec;  /* versi muda: dipakai prioritas tinggi */
+  --yellow-l:#fff2bd;/* versi muda: dipakai prioritas sedang */
+  --blue-l:#dfe8ff;  /* versi muda: dipakai prioritas rendah */
+  --mint-l:#d5fbec;  /* versi muda: dipakai tugas selesai */
+  --line:3px solid var(--ink);   /* garis tepi tebal standar */
+  --shadow:6px 6px 0 var(--ink); /* bayangan keras tanpa blur */
 }
+
+/* Reset: lebar elemen sudah termasuk padding & border, margin bawaan dihapus */
 *{box-sizing:border-box;margin:0}
+
+/* Pengaturan umum halaman */
 body{
-  font-family:'DM Sans',system-ui,sans-serif;color:var(--ink);
-  background:var(--bg);
-  background-image:radial-gradient(rgba(22,18,37,.18) 1.5px,transparent 1.5px);
-  background-size:24px 24px;
-  padding:40px 20px 70px;min-height:100vh;
+  font-family:'DM Sans',system-ui,sans-serif; /* font utama, cadangan font sistem */
+  color:var(--ink);                           /* warna teks */
+  background:var(--bg);                       /* warna latar */
+  background-image:radial-gradient(rgba(22,18,37,.18) 1.5px,transparent 1.5px); /* pola titik-titik */
+  background-size:24px 24px;                  /* jarak antar titik */
+  padding:40px 20px 70px;                     /* ruang di sekeliling isi */
+  min-height:100vh;                           /* tinggi minimal = tinggi layar */
 }
+
+/* Semua judul h1 memakai font Bricolage Grotesque */
 h1{font-family:'Bricolage Grotesque',sans-serif}
+
+/* Pembungkus: dibatasi lebar 860px, dipusatkan, tersusun vertikal (grid) */
 .wrap{max-width:860px;margin:0 auto;display:grid;gap:34px}
 
-/* ===== Bagian atas ===== */
+
+/* ===== BAGIAN ATAS (HEADER) ===== */
+
+/* Dua kolom: judul di kiri (1fr = sisa ruang), progres di kanan (auto = sesuai isi) */
 .top{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center;position:relative}
+
+/* Stiker tanggal: kotak merah muda sedikit miring */
 .sticker{
   display:inline-block;background:var(--pink);border:var(--line);border-radius:12px;
-  padding:7px 14px;font-weight:700;transform:rotate(-3deg);box-shadow:4px 4px 0 var(--ink);
+  padding:7px 14px;font-weight:700;
+  transform:rotate(-3deg);            /* memiringkan 3 derajat */
+  box-shadow:4px 4px 0 var(--ink);    /* bayangan keras */
 }
+
+/* Judul besar "Beres!" */
 h1{
-  font-size:clamp(4.2rem,13vw,7.5rem);font-weight:800;line-height:.95;letter-spacing:-.03em;margin:14px 0 10px;
-  color:var(--yellow);-webkit-text-stroke:3px var(--ink);paint-order:stroke fill;
-  text-shadow:6px 6px 0 var(--ink);
+  font-size:clamp(4.2rem,13vw,7.5rem); /* ukuran menyesuaikan lebar layar (min, ideal, max) */
+  font-weight:800;line-height:.95;letter-spacing:-.03em;margin:14px 0 10px;
+  color:var(--yellow);                 /* isi huruf kuning */
+  -webkit-text-stroke:3px var(--ink);  /* garis tepi huruf */
+  paint-order:stroke fill;             /* garis tepi digambar di bawah isi */
+  text-shadow:6px 6px 0 var(--ink);    /* bayangan huruf */
 }
+
+/* Paragraf pengantar: dibatasi 32 karakter agar rapi */
 .title p{max-width:32ch;line-height:1.5;font-weight:500}
+
+/* Kapsul status koneksi */
 .status{display:inline-flex;align-items:center;gap:8px;margin-top:16px;font-size:.85rem;font-weight:700;
   background:var(--white);border:2px solid var(--ink);border-radius:99px;padding:6px 12px}
+
+/* Titik status: hijau (terhubung) */
 .dot{width:10px;height:10px;border-radius:50%;background:var(--mint);border:2px solid var(--ink)}
+/* Titik status saat gagal terhubung: merah muda */
 .dot.off{background:var(--pink)}
 
+/* Gaya kartu umum: latar putih, garis tebal, sudut bulat, bayangan */
 .card{background:var(--white);border:var(--line);border-radius:24px;box-shadow:var(--shadow)}
+
+/* Kartu progres: isi sejajar menyamping, sedikit miring ke kanan */
 .prog{padding:20px 24px;display:flex;align-items:center;gap:18px;transform:rotate(2deg)}
+
+/* Wadah lingkaran progres; position:relative agar angka bisa diletakkan di tengah */
 .ring{position:relative;width:130px;height:130px;flex:none}
+/* SVG diputar -90° agar pengisian mulai dari atas */
 .ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+/* Lingkaran tanpa isi, hanya garis; ujung garis membulat */
 .ring circle{fill:none;stroke-width:24;stroke-linecap:round}
+/* Warna jalur latar */
 .ring .track{stroke:var(--blue-l)}
+/* Batang progres: dasharray = keliling lingkaran (2πr ≈ 502);
+   dashoffset 502 = kosong, JavaScript mengubahnya untuk mengisi;
+   transition = animasi halus saat nilainya berubah */
 .ring .bar{stroke:var(--blue);stroke-dasharray:502;stroke-dashoffset:502;transition:stroke-dashoffset .7s cubic-bezier(.2,.8,.2,1)}
+/* Angka persentase dipusatkan di atas lingkaran */
 .ring .num{position:absolute;inset:0;display:grid;place-items:center}
 .ring .num b{font-family:'Bricolage Grotesque';font-size:2rem;font-weight:800}
+/* Teks di samping lingkaran */
 .prog-text{display:grid;gap:4px}
 .prog-text strong{font-family:'Bricolage Grotesque';font-size:1.25rem}
 .prog-text span{font-size:.9rem;font-weight:500}
 
-/* ===== Papan tugas ===== */
+
+/* ===== PAPAN TUGAS ===== */
+
+/* Padding dalam kartu utama */
 .board{padding:28px}
+/* Form: elemen tersusun vertikal dengan jarak 12px */
 form{display:grid;gap:12px}
+/* Baris prioritas + tanggal + tombol: menyamping, turun ke bawah jika sempit */
 .row2{display:flex;gap:12px;flex-wrap:wrap}
+/* Tiap isi baris berbagi lebar sama, minimal 150px */
 .row2 > *{flex:1;min-width:150px}
+/* Input, select, tombol memakai font & warna dari halaman */
 input,select,button{font:inherit;color:var(--ink)}
+/* Gaya kolom teks, tanggal, dan pilihan */
 input[type=text],input[type=date],select{
   border:var(--line);background:var(--white);border-radius:14px;padding:14px 16px;outline:none;font-weight:500;min-width:0}
+/* Kolom judul sedikit lebih besar */
 input[type=text]{font-size:1.05rem}
+/* Saat kolom dipilih (fokus), latar menjadi kuning muda */
 input:focus,select:focus{background-color:var(--yellow-l)}
+
+/* Tombol utama (+ Tambah, Masuk) */
 .add{
   background:var(--blue);color:#fff;border:var(--line);border-radius:14px;padding:14px 22px;
   font-weight:800;font-size:1rem;cursor:pointer;box-shadow:4px 4px 0 var(--ink);
-  transition:transform .12s,box-shadow .12s;
+  transition:transform .12s,box-shadow .12s; /* animasi halus saat hover/klik */
 }
+/* Hover: tombol terangkat (geser ke kiri-atas, bayangan membesar) */
 .add:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+/* Ditekan: tombol seperti masuk ke bawah (bayangan hilang) */
 .add:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
 
+/* Wadah tab filter */
 .tabs{display:flex;gap:10px;flex-wrap:wrap;margin:26px 0 18px}
+/* Tombol tab berbentuk kapsul */
 .tab{
   border:var(--line);background:var(--white);border-radius:99px;padding:9px 16px;font-weight:700;cursor:pointer;
   transition:background .15s;
 }
 .tab:hover{background:var(--yellow-l)}
+/* Tab yang aktif berwarna kuning dan berbayang */
 .tab.on{background:var(--yellow);box-shadow:3px 3px 0 var(--ink)}
+/* Lencana jumlah tugas di dalam tab */
 .tab small{margin-left:8px;background:var(--ink);color:#fff;border-radius:99px;padding:2px 8px;font-size:.75rem}
 
+/* Daftar tugas: tanpa titik poin, tersusun vertikal */
 ul{list-style:none;padding:0;display:grid;gap:14px}
+/* Satu tugas: 4 kolom (centang | isi | edit | hapus) */
 li{
   display:grid;grid-template-columns:auto 1fr auto auto;gap:12px;align-items:center;
   border:var(--line);border-radius:18px;padding:14px 16px;box-shadow:4px 4px 0 var(--ink);
-  background:var(--blue-l);animation:pop .25s ease both;
+  background:var(--blue-l);animation:pop .25s ease both; /* animasi muncul */
 }
+/* Warna kartu berdasarkan prioritas */
 li.tinggi{background:var(--pink-l)}
 li.sedang{background:var(--yellow-l)}
 li.rendah{background:var(--blue-l)}
+/* Tugas selesai berwarna hijau mint */
 li.done{background:var(--mint-l)}
+/* Animasi "pop": muncul dari bawah sambil membesar */
 @keyframes pop{from{opacity:0;transform:translateY(8px) scale(.97)}to{opacity:1;transform:none}}
 
+/* Tombol centang: kotak putih, tanda ✓ tersembunyi (transparan) */
 .chk{
   width:38px;height:38px;border-radius:12px;border:var(--line);background:var(--white);
   cursor:pointer;display:grid;place-items:center;color:transparent;font-size:1.2rem;font-weight:800;transition:.15s;
 }
 .chk:hover{background:var(--mint)}
+/* Jika tugas selesai: kotak hijau dan tanda ✓ terlihat */
 li.done .chk{background:var(--mint);color:var(--ink)}
+/* Judul tugas; overflow-wrap agar kata panjang tidak keluar kotak */
 .t{font-weight:800;font-size:1.05rem;overflow-wrap:anywhere}
+/* Info deadline & prioritas (teks kecil agak pudar) */
 .m{font-size:.85rem;margin-top:3px;font-weight:500;opacity:.75}
+/* Judul tugas selesai dicoret dan dipudarkan */
 li.done .t{text-decoration:line-through;text-decoration-thickness:3px;opacity:.55}
+/* Tombol hapus */
 .del{
   border:2px solid var(--ink);background:var(--white);border-radius:10px;width:36px;height:36px;
   font-weight:800;cursor:pointer;transition:.15s;
 }
+/* Hover hapus: merah muda dan sedikit berputar */
 .del:hover{background:var(--pink);transform:rotate(8deg)}
 
+/* Tampilan saat daftar kosong */
 .empty{text-align:center;padding:30px 10px}
 .empty b{display:block;font-family:'Bricolage Grotesque';font-size:1.5rem;margin-bottom:4px}
+/* Kartu "kosong": transparan dengan garis putus-putus, tanpa bayangan */
 li.kosong{display:block;background:transparent;border:3px dashed var(--ink);box-shadow:none}
+/* Kotak pesan error: awalnya disembunyikan, JavaScript yang menampilkannya */
 .err{background:var(--pink);border:var(--line);padding:10px 14px;border-radius:12px;margin-top:14px;font-weight:700;display:none}
 
+/* Garis biru saat elemen dipilih dengan keyboard (aksesibilitas) */
 :focus-visible{outline:4px solid var(--blue);outline-offset:2px}
+
+/* Layar ≤ 700px (tablet/HP): header jadi satu kolom */
 @media(max-width:700px){
   .top{grid-template-columns:1fr}
-  .prog{transform:none;justify-self:start}
+  .prog{transform:none;justify-self:start}   /* kartu progres tidak miring */
   body{padding:28px 16px 50px}
   .board{padding:20px}
 }
+/* Bagi pengguna yang memilih mengurangi gerakan: semua animasi dimatikan */
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
-/* ===== Perbaikan khusus HP ===== */
+
+/* ===== PERBAIKAN KHUSUS HP ===== */
+
+/* Menghilangkan tampilan bawaan browser dan menyamakan tinggi kolom */
 input[type=date],select{appearance:none;-webkit-appearance:none;min-height:54px}
+/* Panah kecil pada pilihan (select) dibuat dari gambar SVG */
 select{
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%23161225' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 16px center;padding-right:40px;
 }
+/* Layar ≤ 560px (HP): tombol lebih besar agar mudah disentuh jari */
 @media(max-width:560px){
-  .row2 > *{flex:1 1 100%}
+  .row2 > *{flex:1 1 100%}            /* setiap elemen memenuhi satu baris */
   .chk{width:44px;height:44px}
   .del{width:44px;height:44px}
   .edit{width:44px;height:44px;padding:0}
@@ -129,28 +226,40 @@ select{
   .tab{padding:10px 14px}
 }
 
-/* ===== Login ===== */
+
+/* ===== LOGIN ===== */
+
+/* Class untuk menyembunyikan elemen; !important agar mengalahkan aturan lain */
 .hidden{display:none!important}
+/* Gaya kolom email & password (sama dengan kolom lain) */
 input[type=email],input[type=password]{
   border:var(--line);background:var(--white);border-radius:14px;padding:14px 16px;outline:none;font-weight:500;font-size:1.05rem;min-width:0;min-height:54px}
 input[type=email]:focus,input[type=password]:focus{background-color:var(--yellow-l)}
+/* Tab Masuk/Daftar */
 .atab{border:var(--line);background:var(--white);border-radius:99px;padding:9px 18px;font-weight:700;cursor:pointer}
 .atab:hover{background:var(--yellow-l)}
 .atab.on{background:var(--yellow);box-shadow:3px 3px 0 var(--ink)}
+/* Kotak login: lebar maksimal 460px dan di tengah */
 .auth{max-width:460px;width:100%;justify-self:center}
 .auth .tabs{margin-top:0}
+/* Teks petunjuk kecil */
 .note{margin-top:16px;font-size:.9rem;font-weight:500;line-height:1.5}
+/* Info email pengguna + tombol Keluar */
 .who{display:flex;align-items:center;gap:10px;margin-top:12px;font-size:.85rem;font-weight:700;flex-wrap:wrap}
 .who span{overflow-wrap:anywhere}
 .who button{border:2px solid var(--ink);background:var(--pink);border-radius:99px;padding:5px 14px;font-weight:800;cursor:pointer}
 .who button:hover{background:var(--yellow)}
 
-/* ===== Catatan & tombol edit ===== */
+
+/* ===== CATATAN & TOMBOL EDIT ===== */
+
+/* Bagian isi tugas (judul, info, catatan) */
 .task-content {
     flex: 1;
-    min-width: 0;
+    min-width: 0;   /* mencegah isi melebar keluar kotak */
 }
 
+/* Kotak catatan tugas berwarna krem */
 .task-note {
     margin-top: 8px;
     padding: 10px 12px;
@@ -159,10 +268,11 @@ input[type=email]:focus,input[type=password]:focus{background-color:var(--yellow
     border-radius: 9px;
     color: #51452d;
     font-size: 13px;
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
+    white-space: pre-wrap;        /* enter/baris baru pada catatan tetap tampil */
+    overflow-wrap: anywhere;      /* kata panjang dipotong ke baris baru */
 }
 
+/* Tombol edit (✏️) */
 .edit {
     border: 2px solid #201b2c;
     background: #e4eaff;
@@ -175,15 +285,15 @@ input[type=email]:focus,input[type=password]:focus{background-color:var(--yellow
     font-weight: 700;
     transition: .15s;
 }
-
 .edit:hover {
     background: #cbd8ff;
 }
-
+/* Efek mengecil sedikit saat ditekan */
 .edit:active {
     transform: scale(.95);
 }
 
+/* Kolom catatan: lebar penuh, tinggi bisa ditarik ke bawah saja */
 #note {
     width: 100%;
     padding: 14px;
@@ -193,17 +303,74 @@ input[type=email]:focus,input[type=password]:focus{background-color:var(--yellow
     resize: vertical;
 }
 
-/* ===== Tugas yang deadline-nya sudah lewat ===== */
+
+/* ===== TUGAS YANG DEADLINE-NYA SUDAH LEWAT ===== */
+
+/* Kartu abu-abu dengan garis putus-putus */
 li.late{
   background:#eee;
   border-style:dashed;
 }
 li.late .t{opacity:.6}
+/* Tombol centang & edit yang dinonaktifkan: pudar dan kursor "dilarang" */
 .chk:disabled,
 .edit:disabled{
   opacity:.4;
   cursor:not-allowed;
 }
+/* Saat nonaktif, efek hover/active dimatikan */
 .chk:disabled:hover{background:var(--white)}
 .edit:disabled:hover{background:#e4eaff}
 .edit:disabled:active{transform:none}
+
+
+/* ===== PENCARIAN TUGAS ===== */
+
+/* Wadah pencarian; relative agar tombol ✕ bisa diletakkan di dalam kolom */
+.search{
+  position:relative;
+  margin-top:26px;
+}
+/* Kolom pencarian: lebar penuh; padding kanan besar agar teks tidak menimpa tombol ✕ */
+.search input[type=search]{
+  width:100%;
+  border:var(--line);
+  background:var(--white);
+  border-radius:14px;
+  padding:14px 52px 14px 16px;
+  outline:none;
+  font-weight:500;
+  font-size:1.05rem;
+  min-height:54px;
+  appearance:none;
+  -webkit-appearance:none;
+}
+/* Saat diklik, latar menjadi kuning muda */
+.search input[type=search]:focus{background-color:var(--yellow-l)}
+/* Hilangkan tombol silang bawaan browser (kita punya tombol sendiri) */
+.search input[type=search]::-webkit-search-cancel-button{display:none}
+/* Tombol ✕: diletakkan di kanan dan dipusatkan secara vertikal */
+.search button{
+  position:absolute;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
+  width:34px;
+  height:34px;
+  border:2px solid var(--ink);
+  background:var(--pink);
+  border-radius:10px;
+  font-weight:800;
+  cursor:pointer;
+}
+.search button:hover{background:var(--yellow)}
+/* Jarak tab filter yang berada tepat di bawah kolom pencarian */
+.search + .tabs{margin-top:16px}
+
+/* Kata yang cocok dengan pencarian diberi warna stabilo kuning */
+mark{
+  background:var(--yellow);
+  color:var(--ink);
+  border-radius:4px;
+  padding:0 2px;
+}

@@ -1,72 +1,106 @@
 <!DOCTYPE html>
+<!-- Baris di atas menandakan dokumen memakai standar HTML5 (harus paling atas, sebelum komentar apa pun) -->
+
+<!-- Elemen akar halaman; lang="id" = bahasa halaman adalah Indonesia -->
 <html lang="id">
+
+<!-- HEAD: informasi tentang halaman (tidak tampil di layar) -->
 <head>
+    <!-- Pengkodean karakter UTF-8 agar huruf, simbol, dan emoji tampil benar -->
     <meta charset="UTF-8">
+
+    <!-- Membuat halaman responsif: lebar halaman mengikuti lebar layar HP -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- Judul halaman yang tampil di tab browser -->
     <title>Beres! — To-Do List</title>
 
-    <!-- Google Fonts -->
+    <!-- Ikon website (favicon) yang tampil di tab browser.
+         rel="icon" = ini ikon, type = format SVG, href = lokasi file -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <!-- Google Fonts: koneksi awal (preconnect) agar font dimuat lebih cepat -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
+    <!-- Memuat font Bricolage Grotesque (judul) dan DM Sans (teks biasa) -->
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 
-    <!-- Supabase -->
+    <!-- Library Supabase: layanan database dan login (autentikasi) -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 
-    <!-- CSS -->
+    <!-- Menghubungkan file CSS (tampilan) -->
     <link rel="stylesheet" href="style.css">
 </head>
 
+<!-- BODY: seluruh isi yang tampil di layar -->
 <body>
 
+<!-- Pembungkus seluruh isi halaman agar bisa diatur lebar dan posisinya -->
 <div class="wrap">
 
-    <!-- HEADER -->
+    <!-- ========== HEADER: bagian atas halaman ========== -->
     <header class="top">
 
+        <!-- Sisi kiri header: judul, deskripsi, status -->
         <div class="title">
 
+            <!-- Stiker tanggal hari ini (isinya diganti oleh JavaScript) -->
             <span class="sticker" id="today">Hari ini</span>
 
+            <!-- Judul utama aplikasi -->
             <h1>Beres!</h1>
 
+            <!-- Kalimat pengantar singkat -->
             <p>
                 Catat tugasmu, centang kalau sudah selesai,
                 dan lihat progresmu naik.
             </p>
 
+            <!-- Indikator status koneksi ke database -->
             <div class="status">
+                <!-- Titik berwarna: hijau = terhubung, merah muda = gagal -->
                 <i class="dot" id="dot"></i>
+                <!-- Teks status (diisi JavaScript) -->
                 <span id="stat">Menghubungkan...</span>
             </div>
 
+            <!-- Kotak info pengguna; class "hidden" = disembunyikan sampai login -->
             <div class="who hidden" id="whobox">
+                <!-- Tempat menampilkan email pengguna -->
                 <span id="who"></span>
+                <!-- Tombol keluar; type="button" agar tidak mengirim form -->
                 <button id="logout" type="button">Keluar</button>
             </div>
 
         </div>
 
-        <!-- PROGRESS -->
+        <!-- Sisi kanan header: kartu progres (tampil setelah login).
+             aria-label membantu pembaca layar memahami fungsinya -->
         <div class="card prog hidden" id="prog" aria-label="Progres tugas">
 
+            <!-- Lingkaran progres -->
             <div class="ring">
 
+                <!-- Gambar vektor (SVG) dengan area 200x200 -->
                 <svg viewBox="0 0 200 200">
+                    <!-- Lingkaran jalur (abu/biru muda) sebagai latar -->
                     <circle class="track" cx="100" cy="100" r="80" />
+                    <!-- Lingkaran batang berwarna yang terisi sesuai persentase -->
                     <circle class="bar" id="bar" cx="100" cy="100" r="80" />
                 </svg>
 
+                <!-- Angka persentase di tengah lingkaran -->
                 <div class="num">
                     <b id="pct">0%</b>
                 </div>
 
             </div>
 
+            <!-- Teks di samping lingkaran -->
             <div class="prog-text">
                 <strong>Progres kamu</strong>
+                <!-- Contoh isi: "2 dari 5 selesai" -->
                 <span id="cnt">0 dari 0 selesai</span>
             </div>
 
@@ -75,16 +109,24 @@
     </header>
 
 
-    <!-- LOGIN & REGISTER -->
+    <!-- ========== LOGIN & REGISTER ========== -->
+    <!-- section = bagian tersendiri; hidden = awalnya tidak terlihat -->
     <section class="card board auth hidden" id="auth">
 
+        <!-- Tab untuk berpindah antara Masuk dan Daftar -->
         <div class="tabs" id="atabs">
+            <!-- class "on" = tab yang sedang aktif; data-m menyimpan nama mode -->
             <button type="button" class="atab on" data-m="masuk">Masuk</button>
             <button type="button" class="atab" data-m="daftar">Daftar</button>
         </div>
 
+        <!-- Form login/daftar -->
         <form id="af">
 
+            <!-- Kolom email.
+                 type="email" = browser mengecek format email
+                 required = wajib diisi
+                 autocomplete = membantu pengisian otomatis browser -->
             <input
                 type="email"
                 id="email"
@@ -94,6 +136,9 @@
                 aria-label="Email"
             >
 
+            <!-- Kolom password.
+                 type="password" = teks disamarkan
+                 minlength="6" = minimal 6 karakter -->
             <input
                 type="password"
                 id="pw"
@@ -104,14 +149,17 @@
                 aria-label="Password"
             >
 
+            <!-- Tombol kirim form; tulisannya berubah oleh JavaScript -->
             <button class="add" id="asubmit" type="submit">
                 Masuk
             </button>
 
         </form>
 
+        <!-- Tempat pesan error login; role="alert" agar dibacakan pembaca layar -->
         <div class="err" id="aerr" role="alert"></div>
 
+        <!-- Petunjuk di bawah form (teksnya berubah sesuai tab) -->
         <p class="note" id="anote">
             Belum punya akun? Pilih tab Daftar.
             Setiap akun punya daftar tugas sendiri.
@@ -120,12 +168,13 @@
     </section>
 
 
-    <!-- MAIN APPLICATION -->
+    <!-- ========== APLIKASI UTAMA (tampil setelah login) ========== -->
     <main class="card board hidden" id="app">
 
         <!-- FORM TAMBAH TUGAS -->
         <form id="f">
 
+            <!-- Kolom judul tugas, maksimal 120 karakter -->
             <input
                 type="text"
                 id="title"
@@ -136,6 +185,7 @@
                 aria-label="Judul tugas"
             >
 
+            <!-- Kolom catatan (beberapa baris), maksimal 1000 karakter -->
             <textarea
                 id="note"
                 class="full"
@@ -145,14 +195,18 @@
                 aria-label="Catatan tugas"
             ></textarea>
 
+            <!-- Baris berisi prioritas, deadline, dan tombol tambah -->
             <div class="row2 full">
 
+                <!-- Pilihan prioritas; "selected" = pilihan bawaan -->
                 <select id="prio" aria-label="Prioritas">
                     <option value="tinggi">Prioritas tinggi</option>
                     <option value="sedang" selected>Prioritas sedang</option>
                     <option value="rendah">Prioritas rendah</option>
                 </select>
 
+                <!-- Pemilih tanggal deadline (wajib diisi).
+                     Batas minimal tanggal diatur oleh JavaScript -->
                 <input
                     type="date"
                     id="due"
@@ -160,12 +214,14 @@
                     required
                 >
 
+                <!-- Tombol untuk menambah tugas -->
                 <button class="add" type="submit">
                     + Tambah
                 </button>
 
             </div>
 
+            <!-- Aturan pengisian deadline -->
             <p class="note">
                 Pilih deadline hari ini atau tanggal setelahnya.
                 Tanggal yang sudah lewat tidak diperbolehkan.
@@ -174,13 +230,32 @@
         </form>
 
 
-        <!-- ERROR / INFO MESSAGE -->
+        <!-- Kotak pesan error / informasi (muncul sementara) -->
         <div class="err" id="err" role="alert"></div>
 
 
-        <!-- FILTER TUGAS -->
+        <!-- PENCARIAN TUGAS -->
+        <div class="search">
+            <!-- type="search" = kolom khusus pencarian.
+                 autocomplete="off" = tidak menampilkan saran riwayat browser -->
+            <input
+                type="search"
+                id="search"
+                placeholder="🔍 Cari tugas (judul atau catatan)..."
+                maxlength="120"
+                autocomplete="off"
+                aria-label="Cari tugas"
+            >
+            <!-- Tombol ✕ untuk mengosongkan pencarian; tampil hanya jika ada teks -->
+            <button type="button" id="clear-search" class="hidden" aria-label="Hapus pencarian">✕</button>
+        </div>
+
+
+        <!-- FILTER TUGAS: tombol penyaring daftar -->
         <div class="tabs" id="tabs">
 
+            <!-- data-f menyimpan jenis filter: all / open / done.
+                 <small> menampilkan jumlah tugas pada tiap filter -->
             <button class="tab on" type="button" data-f="all">
                 Semua <small id="c-all">0</small>
             </button>
@@ -196,7 +271,7 @@
         </div>
 
 
-        <!-- DAFTAR TUGAS -->
+        <!-- DAFTAR TUGAS: isinya dibuat otomatis oleh JavaScript -->
         <ul id="list"></ul>
 
     </main>
@@ -204,7 +279,9 @@
 </div>
 
 
+<!-- Memuat konfigurasi Supabase (URL dan key). Harus sebelum script.js -->
 <script src="config.js"></script>
+<!-- Memuat program utama aplikasi -->
 <script src="script.js"></script>
 
 </body>
